@@ -10,7 +10,7 @@ app.use("/api/blog",blogRouter)
 
 mongoose
   .connect(
-    "mongodb+srv://Abdulrehman-Jafer:Paswordhai2007@node-cluster.e3ibxci.mongodb.net/?retryWrites=true&w=majority"
+    "mongodb+srv://*********:*********@node-cluster.e3ibxci.mongodb.net/?retryWrites=true&w=majority"
   )
   .then(() => app.listen(5000))
   .then(() => console.log("LISTENING AT THE PORT 5000"))
