@@ -46,18 +46,17 @@ export const login = async (req, res,next) => {
   let existingUser;
  try{
     existingUser = await User.findOne({email})
-    console.log(existingUser)
  }
  catch (err) {
     return console.log(err)
  }
  if(!existingUser || !password || !email ){
-    return res.status(404).json({message:"Could not found User"})   
+    return res.status(404).json({message:"User does not exist"})   
  }
     const isPasswordCorrect = bcrypt.compareSync(password,existingUser.password)
     if(!isPasswordCorrect){
         return res.status(400).json({message:"Incorrect Password"})
     }
-    return res.status(200).json({message:"Login Successful"})
+    return res.status(200).json({existingUser:existingUser})
 };
 
