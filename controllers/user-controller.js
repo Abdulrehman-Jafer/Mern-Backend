@@ -15,7 +15,6 @@ export const getAllUser = async (req, res, next) => {
 };
 
 export const signup = async (req, res) => {
-  console.log(req.body);
   const { name, email, password } = req.body;
   let existingUser;
   try {
