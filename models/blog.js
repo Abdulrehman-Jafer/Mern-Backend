@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const {Schema} = mongoose;
 
@@ -18,6 +19,11 @@ const blogSchema = new Schema({
     user:{
         type:mongoose.Types.ObjectId,
         ref:"User",
+        required:true
+    },
+    date:{
+        type:Date,
+        default:new Date().toLocaleString(),
         required:true
     }
 })

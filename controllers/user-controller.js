@@ -30,7 +30,7 @@ export const signup = async (req, res) => {
     name: name,
     email: email,
     password: hashedPassword,
-    blogs:[]
+    blogs: [],
   });
   try {
     await user.save();
@@ -40,22 +40,33 @@ export const signup = async (req, res) => {
   return res.status(201).json({ user: user });
 };
 
-export const login = async (req, res,next) => {
+export const login = async (req, res, next) => {
   const { email, password } = req.body;
   let existingUser;
- try{
-    existingUser = await User.findOne({email})
- }
- catch (err) {
-    return console.log(err)
- }
- if(!existingUser || !password || !email ){
-    return res.status(404).json({message:"User does not exist"})   
- }
-    const isPasswordCorrect = bcrypt.compareSync(password,existingUser.password)
-    if(!isPasswordCorrect){
-        return res.status(400).json({message:"Incorrect Password"})
-    }
-    return res.status(200).json({existingUser:existingUser})
+  try {
+    existingUser = await User.findOne({ email });
+  } catch (err) {
+    return console.log(err);
+  }
+  if (!existingUser || !password || !email) {
+    return res.status(404).json({ message: "User does not exist" });
+  }
+  const isPasswordCorrect = bcrypt.compareSync(password, existingUser.password);
+  if (!isPasswordCorrect) {
+    return res.status(400).json({ message: "Incorrect Password" });
+  }
+  return res.status(200).json({ existingUser: existingUser });
 };
-
+export const userById = async (req, res, next) => {
+  const { id } = req.params;
+  let existingUser;
+  try {
+    existingUser = await User.findById(id);
+  } catch (error) {
+    return console.log(error);
+  }
+  if (!existingUser) {
+    res.status(204).json({ message: "User Not Found" });
+  }
+  return res.status(200).json({ user: existingUser });
+};

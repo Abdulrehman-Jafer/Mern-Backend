@@ -42,8 +42,8 @@ export const addBlog = async (req, res, next) => {
     await existingUser.save({ session: session });
     await session.commitTransaction();
   } catch (error) {
-    console.log(err);
-    return res.status(500).json({ message: error });
+    console.log(error);
+    return res.status(500).json({ message: "ERROR" });
   }
   return res.status(200).json({ blog: blog });
 };
