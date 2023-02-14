@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Blog from "../models/blog";
 import User from "../models/user";
 
-export const getAllBlogs = async (req, res, next) => {
+export const getAllBlogs = async (req, res) => {
   let blogs;
   try {
     blogs = await Blog.find();
@@ -15,8 +15,8 @@ export const getAllBlogs = async (req, res, next) => {
   return res.status(200).json({ blogs: blogs });
 };
 
-export const addBlog = async (req, res, next) => {
-  const { title, description, image, user } = req.body;
+export const addBlog = async (req, res) => {
+  const { title, description, user,userName } = req.body;
   let existingUser;
   try {
     existingUser = await User.findById(user);
@@ -31,7 +31,7 @@ export const addBlog = async (req, res, next) => {
   const blog = new Blog({
     title: title,
     description: description,
-    image: image,
+    userName:userName,
     user: user,
   });
   try {
@@ -48,7 +48,7 @@ export const addBlog = async (req, res, next) => {
   return res.status(200).json({ blog: blog });
 };
 
-export const updateBlog = async (req, res, next) => {
+export const updateBlog = async (req, res) => {
   const { title, description } = req.body;
   const blogId = req.params.id;
   let blog;
@@ -56,6 +56,7 @@ export const updateBlog = async (req, res, next) => {
     blog = await Blog.findByIdAndUpdate(blogId, {
       title: title,
       description: description,
+      date:Date.now()
     });
   } catch (error) {
     console.log(error);
@@ -66,7 +67,7 @@ export const updateBlog = async (req, res, next) => {
   return res.status(200).json({ blog: blog });
 };
 
-export const blogById = async (req, res, next) => {
+export const blogById = async (req, res) => {
   const { id } = req.params;
   let blogById;
   try {
@@ -80,7 +81,7 @@ export const blogById = async (req, res, next) => {
   return res.status(200).json({ blog: blogById });
 };
 
-export const deleteBlog = async (req, res, next) => {
+export const deleteBlog = async (req, res) => {
   const { id } = req.params;
   let blogById;
   let user;
@@ -99,7 +100,7 @@ export const deleteBlog = async (req, res, next) => {
   return res.status(200).json({ message: "Deleted successfully" });
 };
 
-export const userBlogs = async (req, res, next) => {
+export const userBlogs = async (req, res,next) => {
   const { id } = req.params;
   let existingUser;
   let userBlogs;
@@ -117,7 +118,18 @@ export const userBlogs = async (req, res, next) => {
     console.log(error);
   }
   if (userBlogs.length === 0) {
-    return res.status(200).json({ message: "User has no blogs" });
+    return res.status(200).json({ userBlogs: userBlogs });
   }
- res.send(userBlogs)
+  let blogData = []
+  for (let id of userBlogs){
+  try{
+    const blog = await Blog.findById(id)
+    blogData.push(blog)
+  }
+  catch(err){
+    console.log(err)
+  }
+  }
+  return res.status(200).json({userBlogs:blogData})
 };
+

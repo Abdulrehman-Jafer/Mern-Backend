@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const {Schema} = mongoose;
 
@@ -12,7 +11,7 @@ const blogSchema = new Schema({
         type:String,
         required:true
     },
-    image:{
+    userName:{
         type:String,
         required:true
     },
